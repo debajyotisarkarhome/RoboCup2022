@@ -69,7 +69,7 @@ void loop() {
 
   transmissionPacket["RotationCW"]=digitalRead(leftStickButton);
   transmissionPacket["RotationCCW"]=digitalRead(rightStickButton);
-  transmissionPacket["Speed"]="100";
+  transmissionPacket["Speed"]="1023";
 
 
   serializeJson(transmissionPacket,transmissionBuffer);

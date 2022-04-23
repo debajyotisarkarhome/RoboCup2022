@@ -36,13 +36,38 @@ ERROR Codes :
 
 #define secret "008c70392e3abfbd0fa47bbc2ed96aa99bd49e159727fcba0f2e6abeb3a9d601"
 
-RH_ASK driver(2000,5,12,10,false);  // Data pin NodeMCU D6
+//Pin Defination
+
+#define M11 0
+#define M12 1
+#define M21 3
+#define M22 4
+#define M31 5
+#define M32 6
+#define M41 7
+#define M42 8
+#define M1S A0
+#define M2S A1
+#define M3S A2
+#define M4S A3
+
+#define radioPin 9
+
+#define pwnMax 400
+
+
+
+
+RH_ASK driver(2000,5,12,radioPin,false);  // Data pin NodeMCU D6
 char* ssid = "SSID";
 char* password = "password";
 AsyncWebServer server(80); 
 
 void setup(){
   // put your setup code here, to run once:
+  for(int i=0;i<10;i++){
+    pinMode(i,OUTPUT);
+  }
   driver.init();
   Serial.begin(115200);
   if(!LittleFS.begin()){
@@ -63,7 +88,6 @@ void setup(){
 }
 
 
-
 int drive(char transmissionBufer){
   int i,Direction,RotationCW,RotationCCW,Speed;
   DynamicJsonDocument transmissionPacket(1024);
@@ -71,6 +95,49 @@ int drive(char transmissionBufer){
   Direction=transmissionPacket["Direction"];
   RotationCW=transmissionPacket["RotationCW"];
   RotationCCW=transmissionPacket["RotationCCW"];
+  Speed=transmissionPacket["Speed"];
+  if Speed>pwnMax:      //RPM Locked at designated PWM 
+    Speed=pwmMAx;
+  switch(Direction){
+    case 0:
+      break;
+    case 1:
+      digitalWrite(M11,HIGH);
+      digitalWrite(M12,LOW);
+      digitalWrite(M21,HIGH);
+      digitalWrite(M22,LOW);
+      digitalWrite(M31,HIGH);
+      digitalWrite(M32,LOW);
+      digitalWrite(M41,HIGH);
+      digitalWrite(M42,LOW);
+    case 2;
+      digitalWrite(M11,LOW);
+      digitalWrite(M12,HIGH);
+      digitalWrite(M21,LOW);
+      digitalWrite(M22,HIGH);
+      digitalWrite(M31,LOW);
+      digitalWrite(M32,HIGH);
+      digitalWrite(M41,LOW);
+      digitalWrite(M42,HIGH);
+    case 3:
+      digitalWrite(M11,HIGH);
+      digitalWrite(M12,LOW);
+      digitalWrite(M21,LOW);
+      digitalWrite(M22,HIGH);
+      digitalWrite(M31,LOW);
+      digitalWrite(M32,HIGH);
+      digitalWrite(M41,HIGH);
+      digitalWrite(M42,LOW);
+    case 4:
+      digitalWrite(M11,LOW);
+      digitalWrite(M12,HIGH);
+      digitalWrite(M21,HIGH);
+      digitalWrite(M22,LOW);
+      digitalWrite(M31,HIGH);
+      digitalWrite(M32,LOW);
+      digitalWrite(M41,LOW);
+      digitalWrite(M42,HIGH);
+  }
 }
 
 
